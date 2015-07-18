@@ -1,16 +1,16 @@
 module.exports = function() {
 
-  var src = './src/',
+  var client = './src/client/',
       tmp = './.tmp',
-      app = src + 'app/';
+      clientApp = client + 'app/';
 
   var config = {
 
     tmp: tmp,
 
-    src: src,
+    client: client,
 
-    index: src + 'index.html',
+    index: client + 'index.html',
 
     // all js for vet
     alljs : [
@@ -19,13 +19,13 @@ module.exports = function() {
     ],
 
     js: [
-      app + '**/*.module.js',
-      app + '**/*.js',
-      '!' + app + '**/*.spec.js'
+      clientApp + '**/*.module.js',
+      clientApp + '**/*.js',
+      '!' + clientApp + '**/*.spec.js'
     ],
 
     scss: [
-      src + 'assets/styles/**/*.scss'
+      client + 'assets/styles/**/*.scss'
     ],
 
     css: tmp + '**/*.css',
@@ -33,7 +33,7 @@ module.exports = function() {
     bower: {
       json: require('./bower.json'),
       directory: './bower_components',
-      ignorePath: '..'
+      ignorePath: '../..'
     }
   };
 

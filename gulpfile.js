@@ -50,7 +50,7 @@ gulp.task('wiredep', function() {
     .src(config.index)
     .pipe(wiredep(options))
     .pipe($.inject(gulp.src(config.js)))
-    .pipe(gulp.dest(config.src));
+    .pipe(gulp.dest(config.client));
 });
 
 gulp.task('inject', ['wiredep', 'styles'], function() {
@@ -60,7 +60,7 @@ gulp.task('inject', ['wiredep', 'styles'], function() {
   return gulp
     .src(config.index)
     .pipe($.inject(gulp.src(config.css)))
-    .pipe(gulp.dest(config.src));
+    .pipe(gulp.dest(config.client));
 });
 
 //////
