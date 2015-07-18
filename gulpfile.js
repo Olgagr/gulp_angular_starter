@@ -1,8 +1,9 @@
-var gulp = require('gulp'),
-    args = require('yargs').alias('v', 'verbose').argv,
-    $ = require('gulp-load-plugins')({lazy:true}),
-    del = require('del'),
-    config = require('./gulp.config')();
+var gulp    = require('gulp'),
+    args    = require('yargs').alias('v', 'verbose').argv,
+    $       = require('gulp-load-plugins')({lazy:true}),
+    del     = require('del'),
+    wiredep = require('wiredep').stream,
+    config  = require('./gulp.config')();
 
 gulp.task('vet', function() {
 
@@ -26,8 +27,8 @@ gulp.task('styles', ['clean-styles'], function() {
     .pipe($.plumber())
     .pipe($.sourcemaps.init())
       .pipe($.sass())
+      .pipe($.autoprefixer())
     .pipe($.sourcemaps.write())
-    .pipe($.autoprefixer())
     .pipe(gulp.dest(config.tmp));
 });
 
@@ -36,8 +37,20 @@ gulp.task('clean-styles', function(done) {
   clean(files, done);
 });
 
-gulp.task('styles-watch', function(){
+gulp.task('styles-watch', function() {
   gulp.watch([config.scss], ['styles']);
+});
+
+gulp.task('wiredep', function() {
+
+  log('Wire up the bower css, js and our app js into the html');
+
+  var options = config.getWiredepDefaultOptions();
+  return gulp
+    .src(config.index)
+    .pipe(wiredep(options))
+    .pipe($.inject(gulp.src(config.js)))
+    .pipe(gulp.dest(config.src));
 });
 
 //////

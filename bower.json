@@ -1,0 +1,17 @@
+{
+  "name": "gulp_angular_starter",
+  "version": "0.0.0",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "lodash": "~3.10.0",
+    "angular": "~1.4.3",
+    "toastr": "~2.1.1"
+  }
+}
