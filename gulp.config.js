@@ -28,10 +28,12 @@ module.exports = function() {
       src + 'assets/styles/**/*.scss'
     ],
 
+    css: tmp + '**/*.css',
+
     bower: {
       json: require('./bower.json'),
       directory: './bower_components',
-      ignorePath: '../..'
+      ignorePath: '..'
     }
   };
 
