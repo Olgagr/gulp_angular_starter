@@ -8,6 +8,7 @@
   "author": "Olga Grabek",
   "license": "ISC",
   "devDependencies": {
+    "browser-sync": "^2.7.13",
     "del": "^1.2.0",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^2.3.1",
@@ -16,6 +17,7 @@
     "gulp-jscs": "^1.6.0",
     "gulp-jshint": "^1.11.2",
     "gulp-load-plugins": "^1.0.0-rc.1",
+    "gulp-nodemon": "^2.0.3",
     "gulp-plumber": "^1.0.1",
     "gulp-print": "^1.1.0",
     "gulp-sass": "^2.0.4",
@@ -25,5 +27,8 @@
     "wiredep": "^3.0.0-beta",
     "yargs": "^3.15.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "express": "^4.13.1",
+    "gzippo": "^0.2.0"
+  }
 }

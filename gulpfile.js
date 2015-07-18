@@ -1,9 +1,10 @@
-var gulp    = require('gulp'),
-    args    = require('yargs').alias('v', 'verbose').argv,
-    $       = require('gulp-load-plugins')({lazy:true}),
-    del     = require('del'),
-    wiredep = require('wiredep').stream,
-    config  = require('./gulp.config')();
+var gulp        = require('gulp'),
+    args        = require('yargs').alias('v', 'verbose').argv,
+    $           = require('gulp-load-plugins')({lazy:true}),
+    del         = require('del'),
+    wiredep     = require('wiredep').stream,
+    config      = require('./gulp.config')(),
+    port        = process.env.PORT || config.defaultPort;
 
 gulp.task('vet', function() {
 
@@ -61,6 +62,35 @@ gulp.task('inject', ['wiredep', 'styles'], function() {
     .src(config.index)
     .pipe($.inject(gulp.src(config.css)))
     .pipe(gulp.dest(config.client));
+});
+
+gulp.task('serve-dev', ['inject'], function () {
+  var isDev = true;
+
+  var nodeOptions = {
+    script: config.nodeServer,
+    delayTime: 1,
+    env: {
+      'PORT': port,
+      'NODE_ENV': isDev ? 'dev' : 'build'
+    },
+    watch: [config.server]
+  };
+
+  return $.nodemon(nodeOptions)
+    .on('restart', ['vet'], function(ev) {
+      log('*** nodemon restarted');
+      log('files changed on restart:\n' + ev);
+    })
+    .on('start', function() {
+      log('*** nodemon started');
+    })
+    .on('crash', function() {
+      log('*** nodemon crashed');
+    })
+    .on('exit', function() {
+      log('*** nodemon exited');
+    });
 });
 
 //////
