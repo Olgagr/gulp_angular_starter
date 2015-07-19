@@ -32,6 +32,8 @@ module.exports = function() {
 
     css: tmp + '**/*.css',
 
+    browserReloadDelay: 1000,
+
     bower: {
       json: require('./bower.json'),
       directory: './bower_components',

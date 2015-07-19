@@ -4,6 +4,7 @@ var gulp        = require('gulp'),
     del         = require('del'),
     wiredep     = require('wiredep').stream,
     config      = require('./gulp.config')(),
+    browserSync = require('browser-sync'),
     port        = process.env.PORT || config.defaultPort;
 
 gulp.task('vet', function() {
@@ -81,9 +82,14 @@ gulp.task('serve-dev', ['inject'], function () {
     .on('restart', ['vet'], function(ev) {
       log('*** nodemon restarted');
       log('files changed on restart:\n' + ev);
+      setTimeout(function() {
+        browserSync.notify('reloading now...');
+        browserSync.reload({stream: false});
+      }, config.browserReloadDelay);
     })
     .on('start', function() {
       log('*** nodemon started');
+      startBrowserSync();
     })
     .on('crash', function() {
       log('*** nodemon crashed');
@@ -94,6 +100,47 @@ gulp.task('serve-dev', ['inject'], function () {
 });
 
 //////
+
+function changeEvent(event) {
+  var srcPattern = new RegExp('/.*(?=/' + config.source + ')/');
+  log('File ' + event.path.replace(srcPattern, '') + ' ' + event.type);
+}
+
+function startBrowserSync() {
+  if (browserSync.active) {
+    return;
+  }
+
+  log('Starting browser-sync on port ' + port);
+
+  gulp.watch([config.scss], ['styles']).on('change', function(event) {
+    changeEvent(event);
+  });
+
+  var options = {
+    proxy: 'localhost:' + port,
+    port: 3001,
+    files: [
+      config.client + '**/*.*',
+      '!' + config.scss,
+      config.tmp + '**/*.css'
+    ],
+    ghostMode: {
+      clicks: true,
+      location: false,
+      forms: true,
+      scroll: true
+    },
+    injectChanges: true,
+    logFilesChanges: true,
+    logLevel: 'debug',
+    logPrefix: 'gulp-patterns',
+    notify: true,
+    reloadDelay: 0
+  };
+
+  browserSync(options);
+}
 
 function clean(path, done) {
   log('Cleaning ' + path);
