@@ -1,17 +1,27 @@
 <html>
-<head ng-app="myApp">
+<head ng-app="app">
   <meta charset="UTF-8">
   <title>Test index</title>
 
+  <!-- build:css assets/styles/lib.css -->
+  
   <!-- bower:css -->
   <link rel="stylesheet" href="/bower_components/toastr/toastr.css" />
   <!-- endbower -->
 
+  <!-- endbuild -->
+
+  <!-- build:css assets/styles/app.css -->
+
   <!-- inject:css --> 
   <link rel="stylesheet" href="/.tmp/app.css"> 
   <!-- endinject -->
+
+  <!-- endbuild -->
 </head>
 <body>
+
+  <!-- build:js js/lib.js -->
 
   <!-- bower:js -->
   <script src="/bower_components/lodash/lodash.js"></script>
@@ -20,9 +30,18 @@
   <script src="/bower_components/toastr/toastr.js"></script>
   <!-- endbower -->
 
+  <!-- endbuild -->
+
+  <!-- build:js js/app.js -->
+
   <!-- inject:js -->
   <script src="/src/client/app/app.js"></script>
   <!-- endinject -->
+
+  <!-- inject:templates:js -->
+  <!-- endinject -->
+  
+  <!-- endbuild -->
   
 </body>
 </html>

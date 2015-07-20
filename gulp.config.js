@@ -1,7 +1,7 @@
 module.exports = function() {
 
   var client = './src/client/',
-      tmp = './.tmp',
+      tmp = './.tmp/',
       clientApp = client + 'app/',
       server = './src/server/',
       build = './build/',
@@ -27,6 +27,7 @@ module.exports = function() {
     buildAssets: buildAssets,
     images: assets + 'images/**/*.*',
     fonts: [assets + 'fonts/**/*.*'],
+    html: clientApp + '**/*.html',
 
     js: [
       clientApp + '**/*.module.js',
