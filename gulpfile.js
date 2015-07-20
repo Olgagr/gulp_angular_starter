@@ -132,7 +132,7 @@ gulp.task('optimize', ['inject'], function() {
   return gulp
     .src(config.index)
     .pipe($.plumber())
-    .pipe($.inject(gulp.src(templateCache, {read: false}), 
+    .pipe($.inject(gulp.src(templateCache, {read: false}),
       {starttag: '<!-- inject:templates:js -->'}))
     .pipe(assets)
     .pipe(assets.restore())
@@ -179,7 +179,7 @@ function serve(isDev) {
     })
     .on('exit', function() {
       log('*** nodemon exited');
-    });  
+    });
 }
 
 function changeEvent(event) {
@@ -194,7 +194,7 @@ function startBrowserSync(isDev) {
 
   log('Starting browser-sync on port ' + port);
 
-  if(isDev) {
+  if (isDev) {
     gulp.watch([config.scss], ['styles']).on('change', function(event) {
       changeEvent(event);
     });
