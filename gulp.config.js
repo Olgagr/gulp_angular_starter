@@ -21,6 +21,7 @@ module.exports = function() {
       './src/**/*.js',
       './*.js'
     ],
+    htmltemplates: clientApp + '**/*.html',
 
     build: build,
     buildAssets: buildAssets,
@@ -40,14 +41,27 @@ module.exports = function() {
 
     css: tmp + '**/*.css',
 
+    // template cache
+    templateCache: {
+      file: 'templates.js',
+      options: {
+        module: 'app',
+        standAlone: false,
+        root: 'app/'
+      }
+    },
+
+    // browser sync
     browserReloadDelay: 1000,
 
+    // bower
     bower: {
       json: require('./bower.json'),
       directory: './bower_components',
       ignorePath: '../..'
     },
 
+    // node settings
     defaultPort: 7203,
     nodeServer: server + 'app.js'
   };

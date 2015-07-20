@@ -73,12 +73,31 @@ gulp.task('clean-fonts', function(done) {
 });
 
 gulp.task('clean-styles', function(done) {
-  var files = config.tmp + '**/*.css';
+  clean(config.tmp + '**/*.css', done);
+});
+
+gulp.task('clean-code', function(done) {
+  var files = [].concat(
+    config.tmp + '**/*.js',
+    config.build + '**/*.html',
+    config.build + 'js/**/*.js'
+  );
   clean(files, done);
 });
 
 gulp.task('styles-watch', function() {
   gulp.watch([config.scss], ['styles']);
+});
+
+gulp.task('templatecache', ['clean-code'], function() {
+  return gulp
+    .src(config.htmltemplates)
+    .pipe($.minifyHtml({empty: true}))
+    .pipe($.angularTemplatecache(
+      config.templateCache.file, 
+      config.templateCache.options
+    ))
+    .pipe(gulp.dest(config.tmp));
 });
 
 gulp.task('wiredep', function() {

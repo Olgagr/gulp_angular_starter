@@ -1,0 +1,1 @@
+angular.module("app").run(["$templateCache", function($templateCache) {$templateCache.put("app/some-dir.html","this is just small test");}]);
