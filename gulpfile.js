@@ -7,6 +7,9 @@ var gulp        = require('gulp'),
     browserSync = require('browser-sync'),
     port        = process.env.PORT || config.defaultPort;
 
+gulp.task('help', $.taskListing);
+gulp.task('default', ['help']);
+
 gulp.task('vet', function() {
 
   log('Analyzing code with jshint and jscs');
@@ -32,6 +35,41 @@ gulp.task('styles', ['clean-styles'], function() {
       .pipe($.autoprefixer())
     .pipe($.sourcemaps.write())
     .pipe(gulp.dest(config.tmp));
+});
+
+gulp.task('images', ['clean-images'], function() {
+
+  log('Coping and compressing images');
+
+  return gulp
+    .src(config.images)
+    .pipe($.imagemin({optimizationLevel: 4}))
+    .pipe(gulp.dest(config.buildAssets + 'images'));
+});
+
+gulp.task('fonts', ['clean-fonts'], function() {
+
+  log('Coping fonts');
+
+  return gulp
+    .src(config.fonts)
+    .pipe(gulp.dest(config.buildAssets + 'fonts'));
+});
+
+gulp.task('clean', function(done) {
+  var delConfig = [].concat(config.build, config.tmp);
+
+  log('Cleaning: ' + delConfig);
+
+  clean(delConfig, done);
+});
+
+gulp.task('clean-images', function(done) {
+  clean(config.buildAssets + 'images', done);
+});
+
+gulp.task('clean-fonts', function(done) {
+  clean(config.buildAssets + 'fonts', done);
 });
 
 gulp.task('clean-styles', function(done) {

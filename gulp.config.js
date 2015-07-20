@@ -3,7 +3,10 @@ module.exports = function() {
   var client = './src/client/',
       tmp = './.tmp',
       clientApp = client + 'app/',
-      server = './src/server/';
+      server = './src/server/',
+      build = './build/',
+      assets = client + 'assets/',
+      buildAssets = build + 'assets/';
 
   var config = {
 
@@ -18,6 +21,11 @@ module.exports = function() {
       './src/**/*.js',
       './*.js'
     ],
+
+    build: build,
+    buildAssets: buildAssets,
+    images: assets + 'images/**/*.*',
+    fonts: [assets + 'fonts/**/*.*'],
 
     js: [
       clientApp + '**/*.module.js',
