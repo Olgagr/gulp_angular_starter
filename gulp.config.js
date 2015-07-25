@@ -7,7 +7,10 @@ module.exports = function() {
       build = './build/',
       assets = client + 'assets/',
       buildAssets = build + 'assets/',
-      root = './';
+      root = './',
+      report = './report/',
+      wiredep = require('wiredep'),
+      bowerFiles = wiredep({devDependencies: true})['js'];
 
   var config = {
 
@@ -29,6 +32,7 @@ module.exports = function() {
     images: assets + 'images/**/*.*',
     fonts: [assets + 'fonts/**/*.*'],
     html: clientApp + '**/*.html',
+    report: report,
 
     js: [
       clientApp + '**/*.module.js',
@@ -77,7 +81,11 @@ module.exports = function() {
 
     // node settings
     defaultPort: 7203,
-    nodeServer: server + 'app.js'
+    nodeServer: server + 'app.js',
+
+    // karma and testing
+    specHelpers: [client + 'test-helpers/*.js'],
+    serverIntegrationSpecs: [] // any integration tests here
   };
 
   config.getWiredepDefaultOptions = function getWiredepDefaultOptions() {
@@ -90,6 +98,37 @@ module.exports = function() {
     return options;
   };
 
+  config.karma = getKarmaOptions();
+
   return config;
+
+  /////////////
+
+  function getKarmaOptions() {
+    var options = {
+      files: [].concat(
+        bowerFiles,
+        config.specHelpers,
+        client + '**/*.module.js',
+        client + '**/*.js',
+        tmp + config.templateCache.file,
+        config.serverIntegrationSpecs
+      ),
+      exclude: [],
+      coverage: {
+        dir: report + 'coverage',
+        reporters: [
+          {type: 'html', subdir: 'report-html'},
+          {type: 'lcov', subdir: 'report-lcov'},
+          {type: 'text-summary'}
+        ]
+      },
+      preprocessors: {}
+    };
+
+    options.preprocessors[clientApp + '**/!(*.spec)*(.js)'] = ['converage'];
+
+    return options;
+  }
 
 };

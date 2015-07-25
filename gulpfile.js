@@ -165,26 +165,26 @@ gulp.task('optimize', ['inject'], function() {
 * --type=major will bump minor version x.*.*
 * --version=1.2.3 will bump to specific version and ignore other flags
 */
-gulp.task('bump', function(){
+gulp.task('bump', function() {
   var msg = 'Bumping version',
       type = args.type,
       version = args.version,
       options = {};
 
-    if (version) {
-      options.version = version;
-      msg += ' to ' + version
-    } else {
-      options.type = type;
-      msg += ' for a ' + type;
-    }
+  if (version) {
+    options.version = version;
+    msg += ' to ' + version;
+  } else {
+    options.type = type;
+    msg += ' for a ' + type;
+  }
 
-    log(msg);
+  log(msg);
 
-    return gulp
-      .src(config.packages)
-      .pipe($.bump(options))
-      .pipe(gulp.dest(config.root));
+  return gulp
+    .src(config.packages)
+    .pipe($.bump(options))
+    .pipe(gulp.dest(config.root));
 });
 
 gulp.task('serve-build', ['optimize'], function() {
@@ -193,6 +193,10 @@ gulp.task('serve-build', ['optimize'], function() {
 
 gulp.task('serve-dev', ['inject'], function () {
   serve(true);
+});
+
+gulp.task('test', ['vet', 'templatecache'], function(done) {
+  startTests(true /* single run */, done);
 });
 
 //////
@@ -274,6 +278,30 @@ function startBrowserSync(isDev) {
   };
 
   browserSync(options);
+}
+
+function startTests(singleRun, done) {
+  var karma = require('karma').server,
+      excludeFiles = [],
+      serverSpecs = config.serverIntegrationSpecs;
+
+  excludeFiles = serverSpecs;
+
+  karma.start({
+    configFile: __dirname + '/karma.conf.js',
+    exclude: excludeFiles,
+    singleRun: !!singleRun
+  }, karmaCompleted);
+
+  function karmaCompleted(karmaResult) {
+    log('Karma completed');
+    if (karmaResult === 1) {
+      // there was an error
+      done('Karma: tests failed with code ' + karmaResult);
+    } else {
+      done();
+    }
+  }
 }
 
 function clean(path, done) {
