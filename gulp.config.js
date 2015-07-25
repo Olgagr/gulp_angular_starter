@@ -6,7 +6,8 @@ module.exports = function() {
       server = './src/server/',
       build = './build/',
       assets = client + 'assets/',
-      buildAssets = build + 'assets/';
+      buildAssets = build + 'assets/',
+      root = './';
 
   var config = {
 
@@ -39,6 +40,7 @@ module.exports = function() {
       client + 'assets/styles/**/*.scss'
     ],
     server: server,
+    root: root,
 
     css: tmp + '**/*.css',
 
@@ -67,6 +69,11 @@ module.exports = function() {
       directory: './bower_components',
       ignorePath: '../..'
     },
+
+    packages: [
+      './package.json',
+      './bower.json'
+    ],
 
     // node settings
     defaultPort: 7203,
