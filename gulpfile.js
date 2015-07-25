@@ -37,6 +37,20 @@ gulp.task('styles', ['clean-styles'], function() {
     .pipe(gulp.dest(config.tmp));
 });
 
+gulp.task('scripts', function() {
+
+  log('Compiling ES6 --> ES5');
+
+  return gulp
+    .src(config.jsES6)
+    .pipe($.plumber())
+    .pipe($.sourcemaps.init())
+      .pipe($.babel())
+      .pipe($.concat('all.js'))
+    .pipe($.sourcemaps.write())
+    .pipe(gulp.dest(config.tmp));
+});
+
 gulp.task('images', ['clean-images'], function() {
 
   log('Coping and compressing images');
@@ -76,6 +90,10 @@ gulp.task('clean-styles', function(done) {
   clean(config.css, done);
 });
 
+gulp.task('clean-scripts', function(done) {
+  clean(config.js, done);
+});
+
 gulp.task('clean-code', function(done) {
   var files = [].concat(
     config.tmp + '**/*.js',
@@ -87,6 +105,10 @@ gulp.task('clean-code', function(done) {
 
 gulp.task('styles-watch', function() {
   gulp.watch([config.scss], ['styles']);
+});
+
+gulp.task('scripts-watch', function() {
+  gulp.watch([config.jsES6], ['scripts']);
 });
 
 gulp.task('templatecache', ['clean-code'], function() {
@@ -102,23 +124,23 @@ gulp.task('templatecache', ['clean-code'], function() {
 
 gulp.task('wiredep', function() {
 
-  log('Wire up the bower css, js and our app js into the html');
+  log('Wire up the bower css, js into the html');
 
   var options = config.getWiredepDefaultOptions();
   return gulp
     .src(config.index)
     .pipe(wiredep(options))
-    .pipe($.inject(gulp.src(config.js)))
     .pipe(gulp.dest(config.client));
 });
 
-gulp.task('inject', ['wiredep', 'styles', 'templatecache'], function() {
+gulp.task('inject', ['wiredep', 'styles', 'templatecache', 'scripts'], function() {
 
   log('Wire up the app css into the html and call wiredep');
 
   return gulp
     .src(config.index)
     .pipe($.inject(gulp.src(config.css)))
+    .pipe($.inject(gulp.src(config.js)))
     .pipe(gulp.dest(config.client));
 });
 
@@ -250,7 +272,8 @@ function startBrowserSync(isDev) {
       changeEvent(event);
     });
   } else {
-    gulp.watch([config.scss, config.js, config.html], ['optimize', browserSync.reload]).on('change', function(event) {
+    gulp.watch([config.scss, config.jsES6, config.html], ['optimize', browserSync.reload]).on('change', function(event) {
+      changeEvent(event);
       changeEvent(event);
     });
   }

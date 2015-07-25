@@ -5,6 +5,8 @@ app.directive('someDir', [function() {
     restrict: 'E',
     templateUrl: 'some-dir.html',
     link: function() {
+      let test = 'test';
+      console.log('hello test');
     }
   };
 }]);

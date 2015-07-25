@@ -34,11 +34,11 @@ module.exports = function() {
     html: clientApp + '**/*.html',
     report: report,
 
-    js: [
-      clientApp + '**/*.module.js',
-      clientApp + '**/*.js',
-      '!' + clientApp + '**/*.spec.js'
-    ],
+    // js: [
+    //   clientApp + '**/*.module.js',
+    //   clientApp + '**/*.js',
+    //   '!' + clientApp + '**/*.spec.js'
+    // ],
 
     scss: [
       client + 'assets/styles/**/*.scss'
@@ -47,6 +47,17 @@ module.exports = function() {
     root: root,
 
     css: tmp + '**/*.css',
+
+    jsES6: [
+      clientApp + '**/*.module.js',
+      clientApp + '**/*.js',
+      '!' + clientApp + '**/*.spec.js'
+    ],
+
+    js: [
+      tmp + '**/*.js',
+      '!' + tmp + 'templates.js'
+    ],
 
     // optimized files
     optimized: {
