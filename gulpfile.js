@@ -272,8 +272,8 @@ function startBrowserSync(isDev) {
       changeEvent(event);
     });
   } else {
-    gulp.watch([config.scss, config.jsES6, config.html], ['optimize', browserSync.reload]).on('change', function(event) {
-      changeEvent(event);
+    gulp.watch([config.scss, config.jsES6, config.html], ['optimize', browserSync.reload])
+      .on('change', function(event) {
       changeEvent(event);
     });
   }
