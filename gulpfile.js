@@ -5,6 +5,9 @@ var gulp        = require('gulp'),
     wiredep     = require('wiredep').stream,
     config      = require('./gulp.config')(),
     browserSync = require('browser-sync'),
+    babelify    = require('babelify'),
+    browserify  = require('browserify'),
+    source      = require('vinyl-source-stream'),
     port        = process.env.PORT || config.defaultPort;
 
 gulp.task('help', $.taskListing);
@@ -41,14 +44,15 @@ gulp.task('scripts', function() {
 
   log('Compiling ES6 --> ES5');
 
-  return gulp
-    .src(config.jsES6)
-    .pipe($.plumber())
-    .pipe($.sourcemaps.init())
-      .pipe($.babel())
-      .pipe($.concat('all.js'))
-    .pipe($.sourcemaps.write())
-    .pipe(gulp.dest(config.tmp));
+  return browserify({
+    entries: config.jsES6MailFile,
+    debug: true
+  })
+  .transform(babelify)
+  .bundle()
+  .pipe(source(config.jsES5DestFileName))
+  .pipe(gulp.dest(config.tmp));
+
 });
 
 gulp.task('images', ['clean-images'], function() {
@@ -268,7 +272,8 @@ function startBrowserSync(isDev) {
   log('Starting browser-sync on port ' + port);
 
   if (isDev) {
-    gulp.watch([config.scss], ['styles']).on('change', function(event) {
+    gulp.watch([config.scss, config.jsES6, config.html], ['inject'])
+      .on('change', function(event) {
       changeEvent(event);
     });
   } else {
@@ -282,9 +287,9 @@ function startBrowserSync(isDev) {
     proxy: 'localhost:' + port,
     port: 3001,
     files: isDev ? [
-      config.client + '**/*.*',
-      '!' + config.scss,
-      config.tmp + '**/*.css'
+      config.client + '**/*.html',
+      config.tmp + '**/*.css',
+      config.tmp + '**/*.js'
     ] : [],
     ghostMode: {
       clicks: true,
@@ -297,7 +302,7 @@ function startBrowserSync(isDev) {
     logLevel: 'debug',
     logPrefix: 'gulp-patterns',
     notify: true,
-    reloadDelay: 0
+    reloadDelay: 1000
   };
 
   browserSync(options);
