@@ -313,12 +313,24 @@ function startBrowserSync(isDev) {
 }
 
 function startTests(singleRun, done) {
-  var karma = require('karma').server,
+  var child,
+      fork = require('child_process').fork,
+      karma = require('karma').server,
       excludeFiles = [],
       serverSpecs = config.serverIntegrationSpecs;
 
-  // for now we exclude any integration tests
-  excludeFiles = serverSpecs;
+  if (args.startServers) { // gulp test --startServers
+    log('Starting server');
+    var savedEnv = process.env;
+    savedEnv.NODE_ENV = 'dev';
+    savedEnv.PORT = 8888;
+    child = fork(config.nodeServer);
+  } else {
+    // exclude integration tests
+    if (serverSpecs && serverSpecs.length) {
+      excludeFiles = serverSpecs;
+    }
+  }
 
   karma.start({
     configFile: __dirname + '/karma.conf.js',
@@ -328,6 +340,10 @@ function startTests(singleRun, done) {
 
   function karmaCompleted(karmaResult) {
     log('Karma completed');
+    if (child) {
+      log('Shutting down the child process');
+      child.kill();
+    }
     if (karmaResult === 1) {
       // there was an error
       done('Karma: tests failed with code ' + karmaResult);
