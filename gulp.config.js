@@ -58,7 +58,7 @@ module.exports = function() {
     jsES6MailFile: client + 'app/app.js',
 
     // name of compiled ES5 file
-    jsES5DestFileName: 'app.js', 
+    jsES5DestFileName: 'app.js',
 
     js: [
       tmp + '**/*.js',
@@ -126,8 +126,7 @@ module.exports = function() {
       files: [].concat(
         bowerFiles,
         config.specHelpers,
-        client + '**/*.module.js',
-        client + '**/*.js',
+        tmp + config.jsES5DestFileName,
         tmp + config.templateCache.file,
         config.serverIntegrationSpecs
       ),
