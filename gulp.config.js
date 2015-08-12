@@ -1,16 +1,16 @@
 module.exports = function() {
 
-  var client = './src/client/',
-      tmp = './.tmp/',
-      clientApp = client + 'app/',
-      server = './src/server/',
-      build = './build/',
-      assets = client + 'assets/',
-      buildAssets = build + 'assets/',
-      root = './',
-      report = './report/',
-      wiredep = require('wiredep'),
-      bowerFiles = wiredep({devDependencies: true})['js'],
+  var client         = './src/client/',
+      tmp            = './.tmp/',
+      clientApp      = client + 'app/',
+      server         = './src/server/',
+      build          = './build/',
+      assets         = client + 'assets/',
+      buildAssets    = build + 'assets/',
+      root           = './',
+      report         = './report/',
+      wiredep        = require('wiredep'),
+      bowerFiles     = wiredep({devDependencies: true})['js'],
       specRunnerFile = 'specs.html';
 
   var config = {
