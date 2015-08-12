@@ -225,7 +225,7 @@ gulp.task('test', ['vet', 'templatecache', 'scripts'], function(done) {
   startTests(true /* single run */, done);
 });
 
-gulp.task('test:watch', ['vet', 'templateCache', 'scripts'], function(done) {
+gulp.task('test:watch', ['vet', 'templatecache', 'scripts'], function(done) {
   startTests(false, done);
 });
 

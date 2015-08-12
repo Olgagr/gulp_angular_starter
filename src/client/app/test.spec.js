@@ -5,4 +5,8 @@ describe('tests configuration', function() {
     expect(true).to.be.true;
   });
 
+  it('returns false', function() {
+    expect(false).to.be.true;
+  });
+
 });
