@@ -10,7 +10,8 @@ module.exports = function() {
       root = './',
       report = './report/',
       wiredep = require('wiredep'),
-      bowerFiles = wiredep({devDependencies: true})['js'];
+      bowerFiles = wiredep({devDependencies: true})['js'],
+      specRunnerFile = 'specs.html';
 
   var config = {
 
@@ -100,6 +101,16 @@ module.exports = function() {
     defaultPort: 7203,
     nodeServer: server + 'app.js',
 
+    //specs.html, our HTML spec runner
+    specRunner: client + specRunnerFile,
+    specRunnerFile: specRunnerFile,
+    testlibraries: [
+      'node_modules/mocha/mocha.js',
+      'node_modules/chai/chai.js',
+      'node_modules/mocha-clean/index.js',
+      'node_modules/sinon-chai/lib/sinon-chai.js'
+    ],
+
     // karma and testing
     specHelpers: [client + 'test-helpers/*.js'],
     specs: [clientApp + '**/*.spec.js'],
@@ -127,7 +138,7 @@ module.exports = function() {
       files: [].concat(
         bowerFiles,
         config.specHelpers,
-        tmp + config.jsES5DestFileName,
+        config.js,
         tmp + config.templateCache.file,
         config.specs,
         config.serverIntegrationSpecs

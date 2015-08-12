@@ -229,9 +229,43 @@ gulp.task('test:watch', ['vet', 'templatecache', 'scripts'], function(done) {
   startTests(false, done);
 });
 
+gulp.task('serve-specs', ['build-specs'], function(done) {
+  log('Running spec runner');
+
+  serve(true /* isDev */, true /* specRunner */);
+  done();
+});
+
+gulp.task('build-specs', ['templatecache', 'scripts'], function() {
+  var options, specs;
+
+  log('Building spec runner');
+  options = config.getWiredepDefaultOptions();
+  options.devDependencies = true;
+  specs = config.specs;
+
+  if (args.startServers) {
+    specs = [].concat(specs, config.serverIntegrationSpecs);
+  }
+
+  return gulp
+    .src(config.specRunner)
+    .pipe(wiredep(options))
+    .pipe($.inject(gulp.src(config.testlibraries),
+      {name: 'inject:testlibraries', read: false}))
+    .pipe($.inject(gulp.src(config.js)))
+    .pipe($.inject(gulp.src(config.specHelpers),
+      {name: 'inject:spechelpers', read: false}))
+    .pipe($.inject(gulp.src(specs),
+      {name: 'inject:specs', read: false}))
+    .pipe($.inject(gulp.src(config.tmp + config.templateCache.file),
+      {name: 'inject:templates', read: false}))
+    .pipe(gulp.dest(config.client));
+});
+
 //////
 
-function serve(isDev) {
+function serve(isDev, specRunner) {
   var nodeOptions = {
     script: config.nodeServer,
     delayTime: 1,
@@ -253,7 +287,7 @@ function serve(isDev) {
     })
     .on('start', function() {
       log('*** nodemon started');
-      startBrowserSync(isDev);
+      startBrowserSync(isDev, specRunner);
     })
     .on('crash', function() {
       log('*** nodemon crashed');
@@ -268,7 +302,7 @@ function changeEvent(event) {
   log('File ' + event.path.replace(srcPattern, '') + ' ' + event.type);
 }
 
-function startBrowserSync(isDev) {
+function startBrowserSync(isDev, specRunner) {
   if (browserSync.active) {
     return;
   }
@@ -276,7 +310,7 @@ function startBrowserSync(isDev) {
   log('Starting browser-sync on port ' + port);
 
   if (isDev) {
-    gulp.watch([config.scss, config.jsES6, config.html], ['inject'])
+    gulp.watch([config.scss, config.jsES6, config.html, config.specs], ['inject'])
       .on('change', function(event) {
       changeEvent(event);
     });
@@ -308,6 +342,10 @@ function startBrowserSync(isDev) {
     notify: true,
     reloadDelay: 1000
   };
+
+  if (specRunner) {
+    options.startPath = config.specRunnerFile;
+  }
 
   browserSync(options);
 }

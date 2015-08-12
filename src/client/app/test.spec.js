@@ -6,7 +6,7 @@ describe('tests configuration', function() {
   });
 
   it('returns false', function() {
-    expect(false).to.be.true;
+    expect(false).to.be.false;
   });
 
 });
