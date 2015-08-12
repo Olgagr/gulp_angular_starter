@@ -102,7 +102,8 @@ module.exports = function() {
 
     // karma and testing
     specHelpers: [client + 'test-helpers/*.js'],
-    serverIntegrationSpecs: [] // any integration tests here
+    specs: [clientApp + '**/*.spec.js'],
+    serverIntegrationSpecs: [] // any integration tests here,
   };
 
   config.getWiredepDefaultOptions = function getWiredepDefaultOptions() {
@@ -128,6 +129,7 @@ module.exports = function() {
         config.specHelpers,
         tmp + config.jsES5DestFileName,
         tmp + config.templateCache.file,
+        config.specs,
         config.serverIntegrationSpecs
       ),
       exclude: [],
@@ -142,7 +144,7 @@ module.exports = function() {
       preprocessors: {}
     };
 
-    options.preprocessors[clientApp + '**/!(*.spec)*(.js)'] = ['converage'];
+    options.preprocessors[clientApp + '**/!(*.spec)*(.js)'] = ['coverage'];
 
     return options;
   }

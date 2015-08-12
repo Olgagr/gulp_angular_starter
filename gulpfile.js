@@ -148,7 +148,7 @@ gulp.task('inject', ['wiredep', 'styles', 'templatecache', 'scripts'], function(
     .pipe(gulp.dest(config.client));
 });
 
-gulp.task('optimize', ['inject'], function() {
+gulp.task('optimize', ['inject', 'test', 'images', 'fonts'], function() {
 
   var templateCache = config.tmp + config.templateCache.file,
       assets = $.useref.assets({searchPath: './'}),
