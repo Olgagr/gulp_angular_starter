@@ -6,12 +6,20 @@ This is collection of gulp tasks to make it easy to start with an angular projec
 $ npm install
 $ bower install
 ```
+By default project will install:
+* angular 1.4
+* angular-ui-router 0.2
+* lodash 3.10
 
 To see all tasks available run:
 
 ```bash
 $ gulp
 ```
+
+The client-side code should be placed in **src/client/app** directory.
+
+The backend code should be placed in **src/server** directory.
 
 ## shrinkwrap
 The project uses npm shrinkwrap, which means all npm packages versions are locked. To make an update of a packages, you have to do:

@@ -56,7 +56,7 @@ module.exports = function() {
     ],
 
     // main ES6 module
-    jsES6MailFile: client + 'app/app.js',
+    jsES6MailFile: client + 'app/app.module.js',
 
     // name of compiled ES5 file
     jsES5DestFileName: 'app.js',

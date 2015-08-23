@@ -1,12 +1,12 @@
-<html>
+<html ng-app="app">
 <head>
+  <base href="/">
   <meta charset="UTF-8">
   <title>Test index</title>
 
   <!-- build:css assets/styles/lib.css -->
   
   <!-- bower:css -->
-  <link rel="stylesheet" href="/bower_components/toastr/toastr.css" />
   <!-- endbower -->
 
   <!-- endbuild -->
@@ -20,14 +20,13 @@
   <!-- endbuild -->
 </head>
 <body>
-
+  <div ui-view></div>
   <!-- build:js js/lib.js -->
 
   <!-- bower:js -->
   <script src="/bower_components/lodash/lodash.js"></script>
   <script src="/bower_components/angular/angular.js"></script>
-  <script src="/bower_components/jquery/dist/jquery.js"></script>
-  <script src="/bower_components/toastr/toastr.js"></script>
+  <script src="/bower_components/angular-ui-router/release/angular-ui-router.js"></script>
   <!-- endbower -->
 
   <!-- endbuild -->
