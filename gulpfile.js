@@ -15,15 +15,15 @@ gulp.task('default', ['help']);
 
 gulp.task('vet', function() {
 
-  log('Analyzing code with jshint and jscs');
+  log('Analyzing code with eslint and jscs');
 
   return gulp
     .src(config.alljs)
     .pipe($.if(args.verbose, $.print()))
     .pipe($.jscs())
-    .pipe($.jshint())
-    .pipe($.jshint.reporter('jshint-stylish', {varbose: true}))
-    .pipe($.jshint.reporter('fail'));
+    .pipe($.eslint())
+    .pipe($.eslint.format())
+    .pipe($.eslint.failOnError());
 });
 
 gulp.task('styles', ['clean-styles'], function() {
